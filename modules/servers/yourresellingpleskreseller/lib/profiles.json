@@ -1,0 +1,381 @@
+{
+  "plesk_reseller": {
+    "slug": "plesk_reseller",
+    "create": {
+      "method": "POST",
+      "path": "/products/plesk/accounts/create",
+      "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:134",
+      "required_fields": [
+        "plan_id",
+        "name",
+        "email"
+      ],
+      "response_id_path": "data.id",
+      "body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 255,
+            "x-validation": [
+              "required",
+              "email",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "x-validation": [
+              "required",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "plan_id": {
+            "type": "string",
+            "format": "uuid",
+            "x-validation": [
+              "required",
+              "uuid",
+              "exists:plesk_plans,id"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "email",
+          "name",
+          "plan_id"
+        ]
+      },
+      "bodyRequired": true,
+      "pathParameters": [],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "plesk:create"
+      ],
+      "responseMode": "json"
+    },
+    "termination": {
+      "method": "POST",
+      "path": "/products/plesk/accounts/{account}/delete",
+      "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:363",
+      "semantics": "terminate reseller account",
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "pathParameters": [
+        {
+          "name": "account",
+          "type": "string",
+          "description": "Account ID"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "plesk:delete"
+      ],
+      "responseMode": "json"
+    },
+    "suspend": {
+      "method": "POST",
+      "path": "/products/plesk/accounts/{account}/suspend",
+      "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:226",
+      "body": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 500,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:500"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "bodyRequired": false,
+      "pathParameters": [
+        {
+          "name": "account",
+          "type": "string",
+          "description": "Account ID"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "plesk:update"
+      ],
+      "responseMode": "json"
+    },
+    "unsuspend": {
+      "method": "POST",
+      "path": "/products/plesk/accounts/{account}/unsuspend",
+      "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:258",
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "pathParameters": [
+        {
+          "name": "account",
+          "type": "string",
+          "description": "Account ID"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "plesk:update"
+      ],
+      "responseMode": "json"
+    },
+    "notes": [
+      "Optional suspend reason string max500",
+      "POST /products/plesk/accounts/{account}/cancel schedules end-of-month cancellation; revoke-cancel supported"
+    ],
+    "displayName": "Plesk Reseller",
+    "module": "yourresellingpleskreseller",
+    "show": {
+      "id": "GET /products/plesk/accounts/{account}",
+      "group": "plesk",
+      "name": "accountsShow",
+      "method": "GET",
+      "path": "/products/plesk/accounts/{account}",
+      "summary": "Show reseller account details",
+      "description": "Returns detailed information about a specific Plesk reseller account including live usage statistics.",
+      "germanSummary": "Reseller-Account Details anzeigen",
+      "permissions": [
+        "plesk:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "account",
+          "type": "string",
+          "description": "Account ID"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Account details",
+          "germanDescription": "Account-Details",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        },
+        {
+          "status": 404,
+          "description": "Account not found",
+          "germanDescription": "Account nicht gefunden",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:89",
+      "routeName": "api.plesk.accounts.show"
+    },
+    "showDataPath": "data",
+    "activeStatuses": [
+      "active"
+    ],
+    "views": {
+      "accountsShow": {
+        "id": "GET /products/plesk/accounts/{account}",
+        "group": "plesk",
+        "name": "accountsShow",
+        "method": "GET",
+        "path": "/products/plesk/accounts/{account}",
+        "summary": "Show reseller account details",
+        "description": "Returns detailed information about a specific Plesk reseller account including live usage statistics.",
+        "germanSummary": "Reseller-Account Details anzeigen",
+        "permissions": [
+          "plesk:read"
+        ],
+        "authenticated": true,
+        "pathParameters": [
+          {
+            "name": "account",
+            "type": "string",
+            "description": "Account ID"
+          }
+        ],
+        "query": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        },
+        "body": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        },
+        "bodyRequired": false,
+        "requestContentType": "application/json",
+        "responseMode": "json",
+        "responses": [
+          {
+            "status": 200,
+            "description": "Account details",
+            "germanDescription": "Account-Details",
+            "schema": null,
+            "example": null,
+            "contentType": "application/json"
+          },
+          {
+            "status": 404,
+            "description": "Account not found",
+            "germanDescription": "Account nicht gefunden",
+            "schema": null,
+            "example": null,
+            "contentType": "application/json"
+          }
+        ],
+        "deprecated": false,
+        "source": "app/Http/Controllers/Api/V1/Plesk/PleskAccountController.php:89",
+        "routeName": "api.plesk.accounts.show"
+      }
+    },
+    "controls": {},
+    "customerFields": [
+      "name",
+      "email"
+    ],
+    "fields": [
+      {
+        "name": "email",
+        "path": false,
+        "required": true,
+        "label": "E-Mail-Adresse",
+        "type": "string",
+        "format": "email",
+        "maxLength": 255,
+        "x-validation": [
+          "required",
+          "email",
+          "max:255"
+        ],
+        "x-validation-expressions": []
+      },
+      {
+        "name": "name",
+        "path": false,
+        "required": true,
+        "label": "Name",
+        "type": "string",
+        "maxLength": 255,
+        "x-validation": [
+          "required",
+          "string",
+          "max:255"
+        ],
+        "x-validation-expressions": []
+      },
+      {
+        "name": "plan_id",
+        "path": false,
+        "required": true,
+        "label": "Tarif-ID",
+        "type": "string",
+        "format": "uuid",
+        "x-validation": [
+          "required",
+          "uuid",
+          "exists:plesk_plans,id"
+        ],
+        "x-validation-expressions": []
+      }
+    ],
+    "configFields": [
+      {
+        "name": "email",
+        "path": false,
+        "required": true,
+        "label": "E-Mail-Adresse",
+        "type": "string",
+        "format": "email",
+        "maxLength": 255,
+        "x-validation": [
+          "required",
+          "email",
+          "max:255"
+        ],
+        "x-validation-expressions": []
+      },
+      {
+        "name": "name",
+        "path": false,
+        "required": true,
+        "label": "Name",
+        "type": "string",
+        "maxLength": 255,
+        "x-validation": [
+          "required",
+          "string",
+          "max:255"
+        ],
+        "x-validation-expressions": []
+      },
+      {
+        "name": "plan_id",
+        "path": false,
+        "required": true,
+        "label": "Tarif-ID",
+        "type": "string",
+        "format": "uuid",
+        "x-validation": [
+          "required",
+          "uuid",
+          "exists:plesk_plans,id"
+        ],
+        "x-validation-expressions": []
+      }
+    ]
+  }
+}
